@@ -1,7 +1,7 @@
 //PROBLEM-1
 /*
 LRU-Cache:
-Implemented the LRU Cache question with a comobo of unordered_map and doubly linked list to achieve average O(1) Time Complexity for both get and put operations;
+Implemented the LRU Cache question with a combo of unordered_map and doubly linked list to achieve average O(1) Time Complexity for both get and put operations;
 Approach :
 According to ques I needed to store key, value pairs and should also be able to return values quickly and also removal and insertion should be fast because of get and put ops must be O(1).We need to also maintain an order of usage effectively .An array/list wouldnt have sufficed because array searches and removes a key in worst case O(n) time.
 So 1) fast access to return values quickly --> use unordered_map : returns values quickly in O(1) time which will store each key's value
@@ -17,7 +17,7 @@ If key is new and cache reached its capacity then remove least recently used fro
 
 Constraints :
 Overall T.C = O(1) and space complexity is O(C) due to map;
-Conclusion : cose this comobo becuase map is fast lookup while doubly linked list provides efficient ordering and eviction problem.
+Conclusion : choose this comobo becuase map is fast lookup giving O(1) while doubly linked list provides efficient ordering and eviction problem which is also O(1).
 */
 class LRUCache {
 public:

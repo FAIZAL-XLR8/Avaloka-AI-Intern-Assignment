@@ -1,0 +1,47 @@
+1)
+LRU_PROblems:
+Function : get(key)
+TC : O(1) : 
+Explaination : Hash map finds node and doubly linked list moves it to the front using a constant number of pointer updates
+put(key val):
+TC(O(1))
+Explaination:Updating or inserting an entry takes constant time and eviction also uses O(1)
+deleteNode(node) :
+TC:O(1)
+NOde is removed by updating its previous and next pointer
+AddAtHead:
+TC : O(1)
+add the head immeately after dummy head node
+Problem2:can_attend_all(events):
+sorting meeting by time =--->TC:O(nlogn)
+Traversal :O(n);
+Space :O(1)
+Min_no_of_Rooms(events):
+Sorting : TC--->O(2nlog2n) space compelexity : O(2n) for vector storing (timestamps,+1/-1)
+2)TradeOffs : WHy hash map and dll 
+Hash map provides average O(1)key lookups but doesnt maintains the order of usage or identify least recently used.
+A doubly linked list maintains a usage order and allows nodes to be removed or added at O(1) when its pointer is available i.e in this case in map and for which map takes O(C) space for storing each node
+Combining these two :
+On a cache hit the node can be located and moved from one place to another effectively
+and on caches full, least recently used entry can be removed from tail and hash map.
+
+Trade off is additional memory usage of map and node pointers to maintain order and provide address of each node in O(1)
+3)Future Proofing : 
+To assign rooms RoomA and RoomB, I would extend my sweep line algo with priority queues instead of counting active meeting
+I would maintain two min heaps : 
+1)Busy_rooms: min heap ordered by meeting end time storing each rooms's time and room id 
+2) Available_rooms: a min heap containg the identifier of rooms that are currently free
+
+First I would sort meetings by their start time.Before assigning a room I would release all rooms whose meeting end at or before new start time and add those room id to Available_rooms heap
+If an availavle room exists I would assign one to the meeting otherwise create a new room such as RoomC.I would then add the assined room and meeting's end time to busy room heap
+I would also store the assigned room id against each meeting so that final results provides both meeting and room number.
+Time complexity : O(nlogn) becuase sortibg meetings and heap ops is lograthmic
+Space : O(n) for room heaps and meeting assignments
+
+4)Concurrency:Making the LRU cache thread safe
+Current doubly lined list and map is not thread safe becuase multiple threads can modify the map and doubly linked simultaneously.
+To make thread safe : Introdce mutex to protect incorrect cache results
+Get() ops would acquirwe lock before checking map and moving a node to front.It would release lock after retrieving value and completing list updates
+Put() ops : acquire lock before checking/updating map or inserting node or evictions. Release only when after all related updates are complete
+I would use std::lock_guard<std::mutex> to ensure lock is released including when exception occurs. also std::lock_guard<std::mutex automatically release the lock when guard goes out of scope.
+We can use a single mutex also because hash map and linked list form one shared state that must remain consistent.
